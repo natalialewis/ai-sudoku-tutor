@@ -315,7 +315,7 @@ In **GitHub → Repository → Settings → Secrets and variables → Actions**,
 
 | Secret | Description |
 |--------|-------------|
-| **`SUPABASE_ACCESS_TOKEN`** | [Create a token](https://supabase.com/dashboard/account/tokens) under Account → Access Tokens. Used by the CLI to link the project. |
+| **`SUPABASE_ACCESS_TOKEN`** | [Create a token](https://supabase.com/dashboard/account/tokens) under Account → Acount Preferences → Access Tokens. Used by the CLI to link the project. |
 | **`SUPABASE_PROJECT_REF`** | Your project reference ID. In the Supabase dashboard URL it is the segment after `/project/` (e.g. `https://supabase.com/dashboard/project/abcdefghij` → use `abcdefghij`). |
 | **`SUPABASE_DB_PASSWORD`** | The database password you set when creating the Supabase project. |
 
