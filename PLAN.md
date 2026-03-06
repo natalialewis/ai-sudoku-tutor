@@ -35,9 +35,11 @@ flowchart TB
 
 ## Database Schema
 
-### 1. Boards Table (`supabase/migrations/create_boards.sql`)
+### 1. Boards Table (`supabase/schemas/boards.sql`)
 
-Store pre-generated boards (full and mini) with metadata:
+Store pre-generated boards (full and mini) with metadata.
+
+Declarative schema:
 
 ```sql
 CREATE TABLE boards (
@@ -54,9 +56,11 @@ CREATE INDEX idx_boards_strategy ON boards(strategy_focus);
 CREATE INDEX idx_boards_difficulty ON boards(difficulty);
 ```
 
-### 2. BKT Probabilities Table (`supabase/migrations/create_bkt_probabilities.sql`)
+### 2. BKT Probabilities Table (`supabase/schemas/bkt.sql`)
 
-Store mastery probabilities per user per knowledge component:
+Store mastery probabilities per user per knowledge component.
+
+Declarative schema:
 
 ```sql
 CREATE TABLE bkt_probabilities (
