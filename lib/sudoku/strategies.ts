@@ -1,0 +1,116 @@
+import type { Board } from "./types";
+import type { Strategy } from "./types";
+import { BOARD_SIZE, BOX_SIZE } from "./types";
+import { getBoxIndex } from "./constraints";
+import { getCandidates, getAllCandidates } from "./candidates";
+
+/** Cell position in a unit. */
+interface CellPos {
+  row: number;
+  col: number;
+}
+
+/**
+ * Get all cells in the row with the given index.
+ * Returns an array of CellPos objects.
+ */
+function getRowCells(rowIndex: number): CellPos[] {
+  const cells: CellPos[] = [];
+  for (let c = 0; c < BOARD_SIZE; c++) cells.push({ row: rowIndex, col: c });
+  return cells;
+}
+
+/**
+ * Get all cells in the column with the given index.
+ * Returns an array of CellPos objects.
+ */
+function getColCells(colIndex: number): CellPos[] {
+  const cells: CellPos[] = [];
+  for (let r = 0; r < BOARD_SIZE; r++) cells.push({ row: r, col: colIndex });
+  return cells;
+}
+
+/**
+ * Get all cells in the box with the given index.
+ * Returns an array of CellPos objects.
+ */
+function getBoxCells(boxIndex: number): CellPos[] {
+  const startRow = Math.floor(boxIndex / BOX_SIZE) * BOX_SIZE;
+  const startCol = (boxIndex % BOX_SIZE) * BOX_SIZE;
+  const cells: CellPos[] = [];
+  for (let r = startRow; r < startRow + BOX_SIZE; r++) {
+    for (let c = startCol; c < startCol + BOX_SIZE; c++) {
+      cells.push({ row: r, col: c });
+    }
+  }
+  return cells;
+}
+
+/**
+ * Get all cells in the row, column, and box containing the cell at (row, col).
+ * Returns an array of arrays of CellPos objects.
+ */
+function getUnitsContaining(row: number, col: number): CellPos[][] {
+  return [
+    getRowCells(row),
+    getColCells(col),
+    getBoxCells(getBoxIndex(row, col)),
+  ];
+}
+
+/**
+ * Detect if cell (row, col) has only one candidate (naked single).
+ */
+export function detectNakedSingle(
+  board: Board,
+  row: number,
+  col: number
+): boolean {
+  const candidates = getCandidates(board, row, col);
+  return candidates.length === 1;
+}
+
+/**
+ * Detect if value can only go in (row, col) within some unit (hidden single).
+ */
+export function detectHiddenSingle(
+  board: Board,
+  row: number,
+  col: number,
+  value: number
+): boolean {
+  const units = getUnitsContaining(row, col);
+  for (const unit of units) {
+    let onlyHere = true;
+    for (const { row: r, col: c } of unit) {
+      if (r === row && c === col) continue;
+      if (board[r][c] !== 0) continue;
+      if (getCandidates(board, r, c).includes(value)) {
+        onlyHere = false;
+        break;
+      }
+    }
+    if (onlyHere) return true;
+  }
+  return false;
+}
+
+/**
+ * Determine which strategy (if any) was used to place `value` at (row, col).
+ * Board state should be *before* the move (cell at (row, col) is empty).
+ * Only naked and hidden single are supported for now. Naked pair and hidden pair will be implemented later.
+ */
+export function detectStrategyUsed(
+  board: Board,
+  row: number,
+  col: number,
+  value: number
+): Strategy | null {
+  const candidates = getCandidates(board, row, col);
+  if (!candidates.includes(value)) return null;
+
+  if (detectNakedSingle(board, row, col)) return "naked_single";
+  if (detectHiddenSingle(board, row, col, value)) return "hidden_single";
+
+  return null;
+}
