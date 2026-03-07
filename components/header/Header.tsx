@@ -9,7 +9,7 @@ export function Header() {
       className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80"
       role="banner"
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-full items-center justify-between px-3 sm:px-4">
         {/* Logo and name */}
         <Link
           href="/"
@@ -22,7 +22,7 @@ export function Header() {
             height={32}
             className="h-8 w-8 shrink-0"
           />
-          <span>Sudoku Pro</span>
+          <span className="text-lg sm:text-xl">Sudoku Pro</span>
         </Link>
 
         {/* Auth and theme toggle */}
