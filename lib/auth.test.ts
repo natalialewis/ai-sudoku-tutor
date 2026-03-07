@@ -16,16 +16,17 @@ describe("getUser", () => {
     jest.clearAllMocks();
   });
 
-  it("redirects to /login when user is not authenticated", async () => {
+  it("returns null when user is not authenticated", async () => {
     mockCreateSupabaseClient.mockResolvedValue({
       auth: {
         getUser: () => Promise.resolve({ data: { user: null } }),
       },
     });
 
-    await getUser();
+    const result = await getUser();
 
-    expect(redirect).toHaveBeenCalledWith("/login");
+    expect(redirect).not.toHaveBeenCalled();
+    expect(result).toBeNull();
   });
 
   it("returns the user when authenticated", async () => {
