@@ -124,14 +124,6 @@ export function AuthNav() {
             >
               Profile
             </Link>
-            <Link
-              href="/settings"
-              role="menuitem"
-              className="block min-h-[2.75rem] px-4 py-2.5 text-left text-sm text-foreground hover:bg-muted focus:bg-muted focus:outline-none sm:min-h-0 sm:py-2 md:text-base"
-              onClick={closeDropdown}
-            >
-              Settings
-            </Link>
             <div className="my-1 border-t border-border" />
             <button
               type="button"
