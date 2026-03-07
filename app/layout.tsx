@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/header/Header";
+import { AppNav } from "@/components/nav/AppNav";
 import { ProfileProvider } from "@/lib/contexts/ProfileContext";
 import "./globals.css";
 
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js and Supabase Starter App",
-  description: "A starter app for building web applications with Next.js and Supabase",
+  title: "Sudoku Pro",
+  description: "An intelligent Sudoku tutor that teaches logical strategies with adaptive practice",
 };
 
 export default function RootLayout({
@@ -39,7 +40,17 @@ export default function RootLayout({
       >
         <ProfileProvider>
           <Header />
-          <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+          <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+            <aside className="flex shrink-0 flex-col md:w-52 lg:w-60">
+              <AppNav />
+            </aside>
+            <div className="min-h-0 min-w-0 flex-1">{children}</div>
+            <aside className="hidden shrink-0 flex-col border-l border-border md:flex md:w-52 lg:w-60">
+              <h2 className="px-4 py-3 text-center text-sm font-medium text-foreground md:text-base">
+                Weekly Leaderboard
+              </h2>
+            </aside>
+          </div>
         </ProfileProvider>
       </body>
     </html>
