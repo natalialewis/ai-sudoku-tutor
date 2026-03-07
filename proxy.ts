@@ -33,7 +33,7 @@ export async function proxy(request: NextRequest) {
         pathname.startsWith("/tutor") ||
         pathname.startsWith("/play");
 
-    // Only redirect to login for protected routes (e.g. profile, settings)
+    // Only redirect to login for protected routes (e.g. profile)
     if (!isPublicRoute && !user) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
