@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import confetti from "canvas-confetti";
 import {
   type Board,
   type Difficulty,
@@ -59,6 +60,24 @@ function strategyMessage(value: number, strategy: "naked_single" | "hidden_singl
   return `You entered ${value}, but it's incorrect. Use the ${name} strategy to solve this cell.`;
 }
 
+function boardsMatch(board: Board, solution: Board): boolean {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] !== solution[r][c]) return false;
+    }
+  }
+  return true;
+}
+
+function fireWinConfetti() {
+  const colors = ["#9b59b6", "#c4077b"];
+  const count = 120;
+  const defaults = { origin: { y: 0.6 }, colors };
+  confetti({ ...defaults, particleCount: count });
+  confetti({ ...defaults, spread: 70, scalar: 0.9 });
+  confetti({ ...defaults, spread: 100, scalar: 1.2 });
+}
+
 // Main component that renders the game.
 export function PlayGame() {
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
@@ -73,6 +92,8 @@ export function PlayGame() {
   const [banner, setBanner] = useState<{ message: string } | null>(null);
   const [hintTier, setHintTier] = useState(0);
   const [highlightedBox, setHighlightedBox] = useState<number | null>(null);
+  const [won, setWon] = useState(false);
+  const confettiFiredRef = useRef(false);
   const hintTargetRef = useRef<{ row: number; col: number; value: number; strategy: "naked_single" | "hidden_single" } | null>(null);
 
   // Start a new game. Set all states to the initial values and generate a new puzzle.
@@ -82,6 +103,8 @@ export function PlayGame() {
     setSelectedCell(null);
     setCellError(null);
     setHighlightedBox(null);
+    setWon(false);
+    confettiFiredRef.current = false;
     setUserCandidates({});
     setHintTier(0);
     hintTargetRef.current = null;
@@ -98,6 +121,22 @@ export function PlayGame() {
   useEffect(() => {
     startNewGame();
   }, []);
+
+  // Detect win: board matches solution.
+  useEffect(() => {
+    if (!board || !solution || won) return;
+    if (boardsMatch(board, solution)) {
+      setWon(true);
+    }
+  }, [board, solution, won]);
+
+  // Fire confetti once when won.
+  useEffect(() => {
+    if (won && !confettiFiredRef.current) {
+      confettiFiredRef.current = true;
+      fireWinConfetti();
+    }
+  }, [won]);
 
   // Helper functions to make the code more readable.
   const cellKey = (r: number, c: number) => `${r},${c}`;
@@ -389,9 +428,10 @@ export function PlayGame() {
         </div>
       )}
 
-      <div className="flex justify-center">
-        <div className="inline-grid w-fit grid-cols-9 border-2 border-foreground/20 bg-card rounded-lg overflow-hidden shadow-sm">
-          {board.map((row, r) =>
+      <div className="flex justify-center relative">
+        <div className="relative inline-block">
+          <div className="inline-grid w-fit grid-cols-9 border-2 border-foreground/20 bg-card rounded-lg overflow-hidden shadow-sm">
+            {board.map((row, r) =>
             row.map((val, c) => {
               const locked = isLocked(r, c);
               const userFilled = locked && !isGiven(r, c);
@@ -434,6 +474,17 @@ export function PlayGame() {
                 </button>
               );
             })
+          )}
+          </div>
+          {won && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/40">
+              <div className="rounded-xl border-2 border-primary bg-card px-8 py-6 text-center shadow-lg">
+                <p className="text-2xl font-bold text-primary">You Won!</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Click New Game to play again
+                </p>
+              </div>
+            </div>
           )}
         </div>
       </div>
