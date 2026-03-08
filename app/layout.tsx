@@ -36,15 +36,17 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col overflow-hidden antialiased bg-background text-foreground`}
       >
         <ProfileProvider>
           <Header />
-          <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
             <aside className="flex shrink-0 flex-col md:w-52 lg:w-60">
               <AppNav />
             </aside>
-            <div className="min-h-0 min-w-0 flex-1">{children}</div>
+            <main className="custom-scrollbar min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain">
+              {children}
+            </main>
             <aside className="hidden shrink-0 flex-col border-l border-border md:flex md:w-52 lg:w-60">
               <h2 className="px-4 py-3 text-center text-sm font-medium text-foreground md:text-base">
                 Weekly Leaderboard

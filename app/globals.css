@@ -138,3 +138,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Custom scrollbar for main content (WebKit: Chrome, Safari, Edge) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--ring);
+  border-radius: 10px;
+  border: 2px solid var(--primary-muted-foreground);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-muted-foreground);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: var(--primary-muted-foreground);
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--muted);
+}
