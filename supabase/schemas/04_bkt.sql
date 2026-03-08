@@ -37,6 +37,13 @@ TO authenticated
 USING ((select auth.uid()) = user_id)
 WITH CHECK (((select auth.uid()) = user_id));
 
+-- Used on the dev page
+CREATE POLICY "BKT probabilities are deletable by the owner"
+ON bkt_probabilities
+FOR DELETE
+TO authenticated
+USING ((select auth.uid()) = user_id);
+
 -- Trigger to update the updated_at column
 CREATE TRIGGER set_updated_at_bkt
 BEFORE UPDATE ON bkt_probabilities
