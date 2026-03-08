@@ -4,6 +4,7 @@ CREATE TABLE boards (
     board_type TEXT NOT NULL CHECK (board_type IN ('full', 'mini')),
     difficulty TEXT CHECK (difficulty IN ('easy', 'medium', 'hard')),
     strategy_focus TEXT CHECK (strategy_focus IN ('naked_single', 'hidden_single', 'naked_pair', 'hidden_pair', NULL)),
+    difficulty_level INTEGER CHECK (difficulty_level >= 1 AND difficulty_level <= 10), -- 1-10 for mini boards, NULL for full
     initial_state JSONB NOT NULL, -- 9x9 grid: [[0-9, ...], ...] where 0 = empty
     solution JSONB NOT NULL -- Complete solution
 );
