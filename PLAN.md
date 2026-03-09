@@ -234,7 +234,6 @@ CREATE INDEX idx_bkt_kc ON bkt_probabilities(knowledge_component);
 
 - Main tutor interface
 - Show current problem (mini board)
-- Progress indicator (mastery probabilities)
 - Strategy explanation panel
 - Next problem button (adaptive selection)
 
@@ -244,10 +243,6 @@ CREATE INDEX idx_bkt_kc ON bkt_probabilities(knowledge_component);
 - Show strategy focus
 - Explanation text
 
-#### `app/tutor/components/ProgressPanel.tsx`
-
-- Display BKT mastery probabilities for each KC
-- Visual progress bars
 
 ### 4. Play Mode (`app/play/`)
 
@@ -255,7 +250,6 @@ CREATE INDEX idx_bkt_kc ON bkt_probabilities(knowledge_component);
 
 - Board selection (difficulty)
 - Full Sudoku board interface
-- Move history
 - Hint system
 - Strategy detection feedback
 
